@@ -6,7 +6,9 @@ var me = {
 		location: "Provo, UT",
 		hobbies: ["Soccer", "HighTech", "WebDev", "A"],
 		ocuppations: "IT Admin, Network Admin, Systems Engineer",
-		latestOcupation: "Security Engineer"
+		latestOcupation: "Sec Engineer",
+		mentions: [{mention:"Hi!"}],
+		friends: [{name:"Lizzie"}]
 };
 
 var express = require('express');
@@ -46,12 +48,9 @@ app.get('/hobbies', function(req, res) {
 	if (req.query.order =='des') {
 		hobbies = me.hobbies.sort().reverse();
 	}
-
-
-
-
 	res.json({hobbies: hobbies});
 });
+
 
 app.get('/ocuppations', function(req, res) {
 	res.type('application/json');
@@ -62,6 +61,17 @@ app.get('/ocuppations/latest', function(req, res) {
 	res.type('application/json');
 	res.json({latestOcupation: me.latestOcupation});
 });
+
+app.post('/mentions', function(req, res) {
+	me.mentions.push(req.body);
+	res.send(JSON.stringify(me));
+});
+
+app.post('/friends', function(req, res) {
+	me.friends.push(req.body);
+	res.send(JSON.stringify(me));
+});
+
 
 
 app.listen(port);
