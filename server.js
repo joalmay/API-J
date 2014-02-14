@@ -8,10 +8,20 @@ var me = {
 		ocuppations: "IT Admin, Network Admin, Systems Engineer",
 		latestOcupation: "Sec Engineer",
 		mentions: [{mention:"Hi!"}],
-		friends: [{name:"Lizzie"}]
+		friends: [{name:"Lizzie"}],
+		skills: [{
+  					id: 1,
+  					name: 'Javascript',
+  					experience: 'Intermediate'
+				},
+				{  	id: 2,
+  					name: 'HTML',
+  					experience: 'Intermediate'
+				}]
 };
 
 var express = require('express');
+var _ = require('underscore')._;
 
 var app = express();
 
@@ -72,6 +82,44 @@ app.post('/friends', function(req, res) {
 	res.send(JSON.stringify(me));
 });
 
+
+//Step 5 : Skills
+
+app.get('/skills', function(req, res) {
+	res.type('application/json');
+	res.json({skills: me.skills});
+});
+
+// GET /skills/:id
+
+app.get('/skills/:id', function(req, res) {
+	res.type('application/json');
+
+	var identifier=parseInt(req.param('id'));
+	//var identifier=req.query.id;
+
+	console.log("obj_id => ", identifier);
+
+	//Find id with underscore
+
+	//if exists
+	var check = _.some( me.skills, function( el ) {
+    	return el.id === identifier;
+	} );
+
+	console.log("array", me.skills)
+
+	if (check) {
+		var obj = _.find(me.skills, function(obj) { return obj.id == identifier });
+		console.log ("obj => ", obj);
+		res.json(obj);
+		
+	} else {
+		res.json({"Result":"Not element with "+identifier});
+	}
+});
+
+	
 
 
 app.listen(port);
